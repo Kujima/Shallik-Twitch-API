@@ -1,2 +1,2 @@
 # Shallik-Twitch-API
-Permet aux application de communiquer avec l'API de Twitch 
+Permet aux applications conçues pour Shallik de communiquer avec l'API de Twitch
