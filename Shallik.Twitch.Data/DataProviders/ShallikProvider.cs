@@ -15,8 +15,11 @@ namespace Shallik.Twitch.Data.DataProviders
     public class ShallikProvider
     {
         const string FILENAME_LOGIN = "login.json";
-        const string FILENAME_OAUTHTOKEN = "OauthToken.json";
-        const string URL_GET_USER = "https://api.twitch.tv/helix/users?login=shallik";
+        const string PATHFILE_LOGIN = "./";
+        const string FILENAME_OAUTHTOKEN = "oauthToken.json";
+        const string PATHFILE_OAUTHTOKEN = "./";
+
+        const string URL_GET_USER = "https://api.twitch.tv/helix/users?login=joj_";
         const string URL_GET_LIVE = "https://api.twitch.tv/helix/streams";
 
         /// <summary>
@@ -29,15 +32,20 @@ namespace Shallik.Twitch.Data.DataProviders
 
         public ShallikProvider()
         {
+            
             // Récupération des informations présent dans le fichier login.json
-            StreamReader readerLogin = new StreamReader(FILENAME_LOGIN);
+            StreamReader readerLogin = new StreamReader(PATHFILE_LOGIN + FILENAME_LOGIN);
             string jsonStringLogin = readerLogin.ReadToEnd();
             _login = JsonConvert.DeserializeObject<Login>(jsonStringLogin);
-
+            
+            
+            
             // Récupération des informations présent dans le fichier OauthToken.json
-            StreamReader readerOauthToken = new StreamReader(FILENAME_OAUTHTOKEN);
+            StreamReader readerOauthToken = new StreamReader(PATHFILE_OAUTHTOKEN + FILENAME_OAUTHTOKEN);
             string jsonStringOauthToken = readerOauthToken.ReadToEnd();
             _oauthToken = JsonConvert.DeserializeObject<OauthToken>(jsonStringOauthToken);
+            
+            
         }
 
         /// <summary>
