@@ -72,18 +72,26 @@ namespace Shallik.Twitch.Data.DataProviders
             _client.DefaultRequestHeaders.Add("Client-Id", _login.client_id);
 
             // Ajout des param à l'url 
-            string urlGetLive = $"{URL_GET_LIVE}?user_id{shallikUser.id}";
+            string urlGetLive = $"{URL_GET_LIVE}?user_id={shallikUser.id}";
 
             // Execution de la requete 
             HttpResponseMessage response = await _client.GetAsync(urlGetLive);
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            // Parse en object
-            DataRecipeLive data = JsonConvert.DeserializeObject<DataRecipeLive>(responseBody);
-            Live live = data.data.First();
-
-            return live;
+            // On vérifie que l'utilisateur est en live
+            JObject json = JObject.Parse(responseBody);
+            if (json["data"].Count() != 0 )
+            {
+                // Parse en object
+                DataRecipeLive data = JsonConvert.DeserializeObject<DataRecipeLive>(responseBody);
+                Live live = data.data.First();
+                return live;
+            }
+            else
+            {
+                return new Live();
+            }
         }
     }
 }
