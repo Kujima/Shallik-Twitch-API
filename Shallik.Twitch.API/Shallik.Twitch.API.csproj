@@ -5,11 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="login.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="login.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Shallik.Twitch.Business\Shallik.Twitch.Business.csproj" />
+    <ProjectReference Include="..\Shallik.Twitch.Data\Shallik.Twitch.Data.csproj" />
   </ItemGroup>
 
 </Project>
