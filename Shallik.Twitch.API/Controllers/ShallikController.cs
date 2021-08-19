@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Shallik.Twitch.API.Controllers
 {
-    [Route("api/v1/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class ShallikController : ControllerBase
     {
         private readonly ShallikBusiness _shallikBusiness;
