@@ -15,11 +15,12 @@ namespace Shallik.Twitch.Data.DataProviders
     public class ShallikProvider
     {
         const string FILENAME_LOGIN = "login.json";
-        const string PATHFILE_LOGIN = "./";
+        const string PATHFILE_LOGIN = @".\";
         const string FILENAME_OAUTHTOKEN = "oauthToken.json";
-        const string PATHFILE_OAUTHTOKEN = "./";
+        const string PATHFILE_OAUTHTOKEN = @".\";
+        const string STREAMER = "tonton";
 
-        const string URL_GET_USER = "https://api.twitch.tv/helix/users?login=joj_";
+        const string URL_GET_USER = "https://api.twitch.tv/helix/users";
         const string URL_GET_LIVE = "https://api.twitch.tv/helix/streams";
 
         /// <summary>
@@ -31,21 +32,17 @@ namespace Shallik.Twitch.Data.DataProviders
         private readonly OauthToken _oauthToken;
 
         public ShallikProvider()
-        {
-            
+        {         
             // Récupération des informations présent dans le fichier login.json
-            StreamReader readerLogin = new StreamReader(PATHFILE_LOGIN + FILENAME_LOGIN);
+            StreamReader readerLogin = new StreamReader(FILENAME_LOGIN);
             string jsonStringLogin = readerLogin.ReadToEnd();
             _login = JsonConvert.DeserializeObject<Login>(jsonStringLogin);
             
-            
-            
             // Récupération des informations présent dans le fichier OauthToken.json
-            StreamReader readerOauthToken = new StreamReader(PATHFILE_OAUTHTOKEN + FILENAME_OAUTHTOKEN);
+            StreamReader readerOauthToken = new StreamReader(FILENAME_OAUTHTOKEN);
             string jsonStringOauthToken = readerOauthToken.ReadToEnd();
             _oauthToken = JsonConvert.DeserializeObject<OauthToken>(jsonStringOauthToken);
-            
-            
+              
         }
 
         /// <summary>
@@ -60,8 +57,11 @@ namespace Shallik.Twitch.Data.DataProviders
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_oauthToken.token_type, _oauthToken.access_token);
             _client.DefaultRequestHeaders.Add("Client-Id", _login.client_id);
 
+            // Ajout du paramètre à l'url
+            string urlGetUser = $"{URL_GET_USER}?login={STREAMER}";
+
             // Execution de la requete
-            HttpResponseMessage response = await _client.GetAsync(URL_GET_USER);
+            HttpResponseMessage response = await _client.GetAsync(urlGetUser);
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
 
